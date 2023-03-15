@@ -20,6 +20,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(zed_interfaces REQUIRED)
+find_package(nlohmann_json REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -30,6 +31,7 @@ target_include_directories(zed_od_listener PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   ${zed_interfaces_INCLUDE_DIRS}
+  nlohmann_json::nlohmann_json
 )
 
 ament_target_dependencies(zed_od_listener
