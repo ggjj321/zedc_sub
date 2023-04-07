@@ -41,34 +41,31 @@ private:
     for (auto obj : msg->objects){
       float x = obj.position[0];
       float y = obj.position[1];
-      float z = obj.position[2];
 
-      int bx = projectTo2d_x(x, y, z);
-      int by = projectTo2d_y(x, y, z);
+      int coordinateX = int(250 + y * 100);
+      int coordinateY = int(50 + x * 150);
+
+      if (coordinateX < 0){
+        coordinateX = 0;
+      }
+      else if (coordinateX > 500){
+        coordinateX = 500;
+      }
+
+      if (coordinateY < 0){
+        coordinateY = 0;
+      }
+      else if (coordinateY > 500){
+        coordinateY = 500;
+      }
 
       auto message = std_msgs::msg::String();
-      message.data = "2d: " + std::to_string(bx) + " " + std::to_string(by) + " ";
+      message.data = "2d: " + std::to_string(coordinateX) + " " + std::to_string(coordinateY) + " ";
       message.data += "label: " + obj.label + " ";
       message.data += "label_id: " + std::to_string(obj.label_id) + " ";
       RCLCPP_INFO(this->get_logger(), message.data);
       publisher_->publish(message);
     }
-  }
-
-  int projectTo2d_x(double x, double y, double z)  
-  {
-      double ax = x;  
-      double eod = z;  
-      double result = ax * (10 / eod);  
-      return round(result);  
-  }
-
-  int projectTo2d_y(double x, double y, double z)  
-  {
-      double ay = y;
-      double eod = z;
-      double result = ay * (10 / eod);
-      return round(result);
   }
   rclcpp::Subscription<zed_interfaces::msg::ObjectsStamped>::SharedPtr subscription_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
